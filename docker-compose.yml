@@ -1,0 +1,23 @@
+version: '3.6'
+services:
+    con_openhab:
+      build: 
+        context: .
+      container_name: con_openhab
+      #depends_on:  
+      environment:    
+        - EXTRA_JAVA_OPTS="-Duser.timezone=Europe/Berlin"
+      volumes:
+        - C:\DockerShares\HomeAutomation\Openhab\addons:C:\ProgramData\chocolatey\lib\openhab\tools\addons
+        - C:\DockerShares\HomeAutomation\Openhab\config:C:\ProgramData\chocolatey\lib\openhab\tools\conf
+        - C:\DockerShares\HomeAutomation\Openhab\data:C:\ProgramData\chocolatey\lib\openhab\tools\userdata
+      ports:
+        - 8200:8080/tcp #http port
+        - 8201:8443/tcp #https port
+      restart: always
+      healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:8080"]
+        interval: 3m
+        timeout: 20s
+        retries: 3
+        start_period: 5m 
